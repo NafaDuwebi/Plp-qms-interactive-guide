@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLP QMS Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C8962A;
+    --gold-light: #F5E6C0;
+    --gold-pale: #FBF5E6;
+    --maroon: #5C1A2E;
+    --maroon-mid: #7A2340;
+    --maroon-light: #F5EBEf;
+    --teal: #1A6B5C;
+    --teal-light: #E0F2ED;
+    --slate: #2C3A4A;
+    --mid: #5A6878;
+    --light: #F4F6F8;
+    --border: #E2E8EF;
+    --white: #FFFFFF;
+    --shadow: 0 2px 12px rgba(44,58,74,0.10);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--light);
+    color: var(--slate);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--maroon);
+    color: white;
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-brand { display: flex; align-items: center; gap: 14px; }
+  .header-logo {
+    width: 44px; height: 44px; background: var(--gold);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--maroon); font-weight: 400;
+  }
+  .header h1 { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; letter-spacing: -0.3px; }
+  .header p { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+  .header-badge {
+    background: rgba(200,150,42,0.2); border: 1px solid rgba(200,150,42,0.4);
+    color: var(--gold-light); font-size: 11px; padding: 4px 12px; border-radius: 20px; white-space: nowrap;
+  }
+
+  /* ── NAV TABS ── */
+  .nav { background: white; border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; gap: 0; overflow-x: auto; }
+  .nav-btn {
+    background: none; border: none; border-bottom: 3px solid transparent;
+    padding: 14px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    color: var(--mid); cursor: pointer; white-space: nowrap; transition: all 0.15s;
+  }
+  .nav-btn:hover { color: var(--slate); }
+  .nav-btn.active { color: var(--maroon); border-bottom-color: var(--gold); }
+
+  /* ── MAIN CONTENT ── */
+  .content { padding: 32px 40px; max-width: 1100px; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 8px;
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; animation: fadeIn 0.2s ease; }
+  .panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── CARDS ── */
+  .card {
+    background: white; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px 24px; box-shadow: var(--shadow);
+  }
+  .card-accent-gold { border-left: 4px solid var(--gold); }
+  .card-accent-teal { border-left: 4px solid var(--teal); }
+  .card-accent-maroon { border-left: 4px solid var(--maroon); }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+  /* ── TYPOGRAPHY ── */
+  h2 { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; color: var(--slate); margin-bottom: 6px; }
+  h3 { font-size: 14px; font-weight: 600; color: var(--slate); margin-bottom: 6px; }
+  h4 { font-size: 12px; font-weight: 600; color: var(--mid); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  p { font-size: 13px; color: var(--mid); line-height: 1.6; }
+  .lead { font-size: 15px; color: var(--mid); line-height: 1.65; max-width: 680px; }
+  ul.prose { padding-left: 16px; }
+  ul.prose li { font-size: 13px; color: var(--mid); line-height: 1.6; margin-bottom: 4px; }
+
+  /* ── PILLS ── */
+  .pill {
+    display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px;
+    border-radius: 20px; white-space: nowrap;
+  }
+  .pill-gold { background: var(--gold-pale); color: #7A5B10; border: 1px solid #E8D090; }
+  .pill-teal { background: var(--teal-light); color: var(--teal); border: 1px solid #A8DDD3; }
+  .pill-maroon { background: var(--maroon-light); color: var(--maroon); border: 1px solid #E0BFCA; }
+  .pill-slate { background: #EEF1F5; color: var(--mid); border: 1px solid var(--border); }
+
+  /* ── STAT CARDS ── */
+  .stat { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; text-align: center; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--maroon); display: block; line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 11px; color: var(--mid); }
+
+  /* ── PROCESS MAP ── */
+  .process-section {
+    background: white; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px 24px; margin-bottom: 16px; box-shadow: var(--shadow);
+  }
+  .process-section-title {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .section-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .process-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .proc-box {
+    background: var(--light); border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 9px 14px; font-size: 12px; font-weight: 500; color: var(--slate);
+    cursor: pointer; transition: all 0.15s; position: relative;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .proc-box:hover { background: white; border-color: var(--gold); color: var(--maroon); box-shadow: 0 2px 8px rgba(200,150,42,0.15); }
+  .proc-box.deliver-box { border-left: 3px solid var(--gold); }
+  .proc-box.support-box { border-left: 3px solid var(--teal); }
+  .proc-arrow { color: var(--gold); font-size: 10px; }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    background: white; border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden; display: none;
+    margin-top: 16px;
+  }
+  .detail-panel.visible { display: block; animation: fadeIn 0.2s ease; }
+  .detail-header {
+    background: var(--maroon); color: white; padding: 18px 24px;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  }
+  .detail-header h3 { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; color: white; margin-bottom: 4px; }
+  .detail-header p { font-size: 12px; color: rgba(255,255,255,0.7); }
+  .detail-close {
+    background: none; border: none; color: rgba(255,255,255,0.6); font-size: 20px;
+    cursor: pointer; line-height: 1; padding: 0; flex-shrink: 0;
+  }
+  .detail-close:hover { color: white; }
+  .detail-body { padding: 20px 24px; }
+  .detail-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .detail-step {
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .step-num {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--gold-pale); border: 1px solid #E8D090;
+    font-size: 11px; font-weight: 600; color: #7A5B10; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 13px; color: var(--mid); line-height: 1.55; }
+  .step-title { font-weight: 500; color: var(--slate); margin-bottom: 2px; }
+
+  /* ── ROLE CARDS ── */
+  .role-card {
+    background: white; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px 22px; box-shadow: var(--shadow);
+  }
+  .role-avatar {
+    width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-weight: 600; font-size: 13px; margin-bottom: 12px;
+  }
+  .role-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .role-list-item { display: flex; gap: 8px; align-items: flex-start; }
+  .role-bullet { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+
+  /* ── AUDIT CYCLE ── */
+  .cycle-steps { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
+  .cycle-step {
+    background: white; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .cycle-step::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .cycle-step-1::before { background: var(--gold); }
+  .cycle-step-2::before { background: #8B5CF6; }
+  .cycle-step-3::before { background: var(--teal); }
+  .cycle-step-4::before { background: #2563EB; }
+  .cycle-step-5::before { background: #DC2626; }
+  .cycle-num {
+    width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 12px; font-weight: 600; margin-bottom: 8px;
+  }
+
+  /* ── DOCS TABLE ── */
+  .docs-grid { display: flex; flex-direction: column; gap: 8px; }
+  .doc-row {
+    background: white; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 12px 16px; display: flex; align-items: center; gap: 14px;
+    transition: all 0.15s; cursor: default;
+  }
+  .doc-row:hover { border-color: var(--gold); box-shadow: 0 2px 8px rgba(200,150,42,0.1); }
+  .doc-icon {
+    width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 16px; flex-shrink: 0;
+  }
+  .doc-info { flex: 1; min-width: 0; }
+  .doc-name { font-size: 13px; font-weight: 500; color: var(--slate); margin-bottom: 2px; }
+  .doc-desc { font-size: 11px; color: var(--mid); }
+  .doc-type { font-size: 11px; color: var(--mid); white-space: nowrap; }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: var(--gold-pale); border: 1px solid #E8D090; border-radius: var(--radius);
+    padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .highlight-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: white; border-top: 1px solid var(--border); padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between; margin-top: 40px;
+  }
+  .footer p { font-size: 11px; color: var(--mid); }
+
+  @media (max-width: 700px) {
+    .header { padding: 20px; flex-direction: column; align-items: flex-start; }
+    .content { padding: 20px; }
+    .nav { padding: 0 20px; }
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    .cycle-steps { grid-template-columns: 1fr 1fr; }
+    .footer { padding: 16px 20px; flex-direction: column; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">PL</div>
+    <div>
+      <h1>QMS Guide</h1>
+      <p>PL Projects · Quality Management System</p>
+    </div>
+  </div>
+  <span class="header-badge">ISO 9001:2015 Accredited</span>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn active" onclick="showPanel('overview', this)">Overview</button>
+  <button class="nav-btn" onclick="showPanel('architecture', this)">Process Architecture</button>
+  <button class="nav-btn" onclick="showPanel('roles', this)">Roles &amp; Responsibilities</button>
+  <button class="nav-btn" onclick="showPanel('audit', this)">Audit Cycle</button>
+  <button class="nav-btn" onclick="showPanel('documents', this)">Key Documents</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ── OVERVIEW PANEL ── -->
+  <div class="panel active" id="panel-overview">
+    <div class="section-label">Getting started</div>
+    <h2>What is the QMS?</h2>
+    <p class="lead" style="margin-bottom:24px">A system of <strong style="color:var(--slate)">processes, procedures, documents and responsibilities</strong> that ensure PLP delivers high-quality services consistently. Maintaining it earns ISO 9001:2015 accreditation — a recognised standard that guarantees quality to clients.</p>
+
+    <div class="grid-4" style="margin-bottom:24px">
+      <div class="stat"><span class="stat-num">25</span><span class="stat-label">processes tracked</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">SharePoint areas</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">audit cycles complete</span></div>
+      <div class="stat"><span class="stat-num">2027</span><span class="stat-label">recertification due</span></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label" style="margin-bottom:12px">Three areas of SharePoint</div>
+    <div class="grid-3" style="margin-bottom:24px">
+      <div class="card card-accent-gold">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span class="pill pill-gold">1</span>
+          <h3 style="margin:0">Process Architecture</h3>
+        </div>
+        <p>The home page — a high-level clickable map of every business process. Each box links to its documents. <strong style="color:var(--slate);font-weight:500">Always start here.</strong></p>
+      </div>
+      <div class="card card-accent-teal">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span class="pill pill-teal">2</span>
+          <h3 style="margin:0">Active Quality Documents</h3>
+        </div>
+        <p>Current PDFs of all flowcharts and procedures — the approved versions you use to carry out work day-to-day.</p>
+      </div>
+      <div class="card card-accent-maroon">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span class="pill pill-maroon">3</span>
+          <h3 style="margin:0">Original Documents</h3>
+        </div>
+        <p>Editable master files (Word, Excel). Only the Quality Manager publishes from here after Director sign-off.</p>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <span class="highlight-icon">💡</span>
+      <div>
+        <h3 style="font-size:13px;margin-bottom:3px">New to the QMS?</h3>
+        <p>Start at the <strong style="color:var(--slate);font-weight:500">Process Architecture</strong> tab above to find your process, then open the procedure from Active Quality Documents on SharePoint. Use the <strong style="color:var(--slate);font-weight:500">Roles</strong> tab to understand your responsibilities and the <strong style="color:var(--slate);font-weight:500">Audit Cycle</strong> tab when your process is being audited.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ARCHITECTURE PANEL ── -->
+  <div class="panel" id="panel-architecture">
+    <div class="section-label">Process architecture</div>
+    <h2 style="margin-bottom:6px">The process map</h2>
+    <p style="margin-bottom:20px">Click any process box to see what it covers. Deliver Business processes follow a sequence (arrows connect them). Support Business processes link to multiple areas and have no fixed order between them.</p>
+
+    <!-- DELIVER BUSINESS -->
+    <div class="process-section">
+      <div class="process-section-title">
+        <span class="section-dot" style="background:var(--gold)"></span>
+        <h3 style="margin:0">Deliver business</h3>
+        <span class="pill pill-gold" style="margin-left:4px">core operations · follow the arrows</span>
+      </div>
+      <div class="process-grid">
+        <div class="proc-box deliver-box" onclick="openDetail('understand')">Understand markets &amp; customers</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('strategy')">Develop business strategy &amp; plans</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('courses')">Create &amp; maintain training courses</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('market')">Market services</div>
+        <div style="width:100%;border-top:1px dashed var(--border);margin:6px 0"></div>
+        <div class="proc-box deliver-box" onclick="openDetail('train-enq')">Receive training enquiry</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('train-opt')">Research &amp; present course options</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('train-design')">Design &amp; produce bespoke training</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('train-del')">Deliver training course</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('train-review')">Review training delivery</div>
+        <div style="width:100%;border-top:1px dashed var(--border);margin:6px 0"></div>
+        <div class="proc-box deliver-box" onclick="openDetail('cons-enq')">Receive consultancy enquiry</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('cons-opt')">Research &amp; present consultancy options</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('cons-del')">Deliver consultancy</div>
+        <span class="proc-arrow" style="align-self:center">→</span>
+        <div class="proc-box deliver-box" onclick="openDetail('cons-review')">Review consultancy delivery</div>
+      </div>
+    </div>
+
+    <!-- SUPPORT BUSINESS -->
+    <div class="process-section">
+      <div class="process-section-title">
+        <span class="section-dot" style="background:var(--teal)"></span>
+        <h3 style="margin:0">Support business</h3>
+        <span class="pill pill-teal" style="margin-left:4px">behind the scenes · no fixed order</span>
+      </div>
+      <div class="process-grid">
+        <div class="proc-box support-box" onclick="openDetail('finances')">Manage finances</div>
+        <div class="proc-box support-box" onclick="openDetail('insurances')">Manage insurances</div>
+        <div class="proc-box support-box" onclick="openDetail('hse')">Manage health, safety &amp; environment</div>
+        <div class="proc-box support-box" onclick="openDetail('accred')">Achieve &amp; maintain accreditations</div>
+        <div class="proc-box support-box" onclick="openDetail('qms')">Operate QMS</div>
+        <div class="proc-box support-box" onclick="openDetail('procurement')">Manage procurement &amp; suppliers</div>
+        <div class="proc-box support-box" onclick="openDetail('people')">Recruit &amp; develop people</div>
+        <div class="proc-box support-box" onclick="openDetail('docs')">Manage documented information</div>
+        <div class="proc-box support-box" onclick="openDetail('infra')">Manage infrastructure &amp; environment</div>
+        <div class="proc-box support-box" onclick="openDetail('performance')">Evaluate business performance</div>
+        <div class="proc-box support-box" onclick="openDetail('audits')">Conduct internal quality audits</div>
+        <div class="proc-box support-box" onclick="openDetail('improvement')">Manage improvement</div>
+      </div>
+    </div>
+
+    <!-- DETAIL PANEL -->
+    <div class="detail-panel" id="detail-panel">
+      <div class="detail-header">
+        <div>
+          <h3 id="detail-title">Process name</h3>
+          <p id="detail-subtitle">Section · Process owner</p>
+        </div>
+        <button class="detail-close" onclick="closeDetail()">×</button>
+      </div>
+      <div class="detail-body">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px" id="detail-pills"></div>
+        <p id="detail-desc" style="margin-bottom:14px"></p>
+        <h4>Key procedure steps</h4>
+        <div class="detail-steps" id="detail-steps"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ROLES PANEL ── -->
+  <div class="panel" id="panel-roles">
+    <div class="section-label">People &amp; accountability</div>
+    <h2 style="margin-bottom:6px">Roles &amp; responsibilities</h2>
+    <p style="margin-bottom:20px">Everyone at PLP has a part to play in the QMS. Your role determines what you're responsible for maintaining, improving and evidencing.</p>
+
+    <div class="grid-3" style="margin-bottom:20px">
+      <div class="role-card" style="border-top:3px solid var(--maroon)">
+        <div class="role-avatar" style="background:var(--maroon-light);color:var(--maroon)">QM</div>
+        <h3>Quality Manager</h3>
+        <p style="font-size:12px;color:var(--mid);margin-bottom:10px">Owns and maintains the QMS overall</p>
+        <div class="role-list">
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--maroon)"></span><p>Maintains the Process Architecture on SharePoint</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--maroon)"></span><p>Coordinates all internal and external audits</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--maroon)"></span><p>Manages process documentation and approvals</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--maroon)"></span><p>Maintains the Active Improvement Log</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--maroon)"></span><p>Reports QMS status to the Management Team</p></div>
+        </div>
+      </div>
+      <div class="role-card" style="border-top:3px solid var(--gold)">
+        <div class="role-avatar" style="background:var(--gold-pale);color:#7A5B10">PO</div>
+        <h3>Process Owner</h3>
+        <p style="font-size:12px;color:var(--mid);margin-bottom:10px">Responsible for their assigned process</p>
+        <div class="role-list">
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--gold)"></span><p>Defines and maintains the process procedure</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--gold)"></span><p>Ensures staff follow the written procedure</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--gold)"></span><p>Agrees and manages corrective actions</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--gold)"></span><p>Conducts spot checks of process deliverables</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--gold)"></span><p>Acts as contact for external auditors</p></div>
+        </div>
+      </div>
+      <div class="role-card" style="border-top:3px solid var(--teal)">
+        <div class="role-avatar" style="background:var(--teal-light);color:var(--teal)">AU</div>
+        <h3>Auditor</h3>
+        <p style="font-size:12px;color:var(--mid);margin-bottom:10px">Independent reviewer of a process</p>
+        <div class="role-list">
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--teal)"></span><p>Checks work matches the documented procedure</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--teal)"></span><p>Records conformities and non-conformities</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--teal)"></span><p>Produces the audit report with findings</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--teal)"></span><p>Agrees findings with the process owner</p></div>
+          <div class="role-list-item"><span class="role-bullet" style="background:var(--teal)"></span><p>Must be independent of the audited process</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label" style="margin-bottom:12px">Additional roles</div>
+    <div class="grid-2">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div class="role-avatar" style="width:32px;height:32px;font-size:11px;background:#EEF1F5;color:var(--mid)">DIR</div>
+          <h3 style="margin:0">Director</h3>
+        </div>
+        <p>Reviews and signs off all major process changes and new documents. Authorises the Process Architecture structure and receives regular QMS status updates from the QM.</p>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div class="role-avatar" style="width:32px;height:32px;font-size:11px;background:#EEF1F5;color:var(--mid)">ALL</div>
+          <h3 style="margin:0">All staff</h3>
+        </div>
+        <p>Every member of staff is expected to follow the procedures for their role, suggest improvements when they identify them, and cooperate fully with auditors when a process is being reviewed.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AUDIT CYCLE PANEL ── -->
+  <div class="panel" id="panel-audit">
+    <div class="section-label">Internal audit programme</div>
+    <h2 style="margin-bottom:6px">The internal audit cycle</h2>
+    <p style="margin-bottom:20px">Internal audits check that work is being carried out in line with documented procedures and identify improvements. All 25 processes are audited on a rolling schedule managed by the Quality Manager.</p>
+
+    <div class="cycle-steps" style="margin-bottom:24px">
+      <div class="cycle-step cycle-step-1">
+        <div class="cycle-num" style="background:var(--gold-pale);color:#7A5B10;border:1px solid #E8D090">1</div>
+        <h3 style="font-size:13px;margin-bottom:4px">Plan</h3>
+        <p style="font-size:12px">QM schedules audits by priority. Assigns an auditor and audit owner. Records on the Internal Quality Audit Schedule.</p>
+      </div>
+      <div class="cycle-step cycle-step-2">
+        <div class="cycle-num" style="background:#EDE9FE;color:#5B21B6;border:1px solid #C4B5FD">2</div>
+        <h3 style="font-size:13px;margin-bottom:4px">Initiate</h3>
+        <p style="font-size:12px">QM prepares the report template. Audit owner agrees scope and confirms authority to proceed.</p>
+      </div>
+      <div class="cycle-step cycle-step-3">
+        <div class="cycle-num" style="background:var(--teal-light);color:var(--teal);border:1px solid #A8DDD3">3</div>
+        <h3 style="font-size:13px;margin-bottom:4px">Conduct</h3>
+        <p style="font-size:12px">Auditor interviews process owner, checks evidence against the procedure, records conformities and non-conformities.</p>
+      </div>
+      <div class="cycle-step cycle-step-4">
+        <div class="cycle-num" style="background:#DBEAFE;color:#1D4ED8;border:1px solid #BFDBFE">4</div>
+        <h3 style="font-size:13px;margin-bottom:4px">Report</h3>
+        <p style="font-size:12px">Auditor agrees findings with process owner. Final report sent to audit owner and QM.</p>
+      </div>
+      <div class="cycle-step cycle-step-5">
+        <div class="cycle-num" style="background:#FEE2E2;color:#B91C1C;border:1px solid #FECACA">5</div>
+        <h3 style="font-size:13px;margin-bottom:4px">Resolve</h3>
+        <p style="font-size:12px">QM logs non-conformities and improvements in the Improvement Log. Actions agreed and tracked to closure.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label" style="margin-bottom:12px">Scoring &amp; findings</div>
+    <div class="grid-3">
+      <div class="card" style="border-top:3px solid #16A34A">
+        <h4 style="color:#15803D">Conformity · 1/1</h4>
+        <p>Evidence found that the process step is being followed as documented. Note <em>where</em> the evidence was seen (e.g., SharePoint, CRM, meeting minutes).</p>
+      </div>
+      <div class="card" style="border-top:3px solid #DC2626">
+        <h4 style="color:#B91C1C">Non-conformity · 0/1</h4>
+        <p>A process step is not being followed, or evidence cannot be found. The step must be scored 0/1 and recorded with a corrective action.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--gold)">
+        <h4 style="color:#7A5B10">Improvement</h4>
+        <p>A suggestion to improve the process or its wording — even if the step is currently conformant. Recorded separately from non-conformities.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:20px" class="highlight">
+      <span class="highlight-icon">📋</span>
+      <div>
+        <h3 style="font-size:13px;margin-bottom:3px">Scoring rule</h3>
+        <p>If <em>any</em> non-conformity is found within a step, the entire step must be scored <strong style="color:var(--slate)">0/1</strong>. Once all steps are scored the overall percentage conformity is calculated. This feeds directly into the Internal Audit Overview Report.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DOCUMENTS PANEL ── -->
+  <div class="panel" id="panel-documents">
+    <div class="section-label">Reference materials</div>
+    <h2 style="margin-bottom:6px">Key documents &amp; tools</h2>
+    <p style="margin-bottom:20px">These are the primary QMS documents you'll encounter. All are stored on SharePoint in the Active Quality Documents area.</p>
+
+    <div class="docs-grid">
+      <div class="doc-row">
+        <div class="doc-icon" style="background:var(--gold-pale)">📅</div>
+        <div class="doc-info">
+          <div class="doc-name">Internal Quality Audit Schedule</div>
+          <div class="doc-desc">Rolling Gantt chart showing which process is being audited when, who the auditor and owner are, and the current status (P / E / R) for each cycle. Maintained by the QM.</div>
+        </div>
+        <span class="pill pill-gold doc-type">Schedule · XLSX</span>
+      </div>
+      <div class="doc-row">
+        <div class="doc-icon" style="background:#FEE2E2">📝</div>
+        <div class="doc-info">
+          <div class="doc-name">Active Improvement Log</div>
+          <div class="doc-desc">Tracks all non-conformities, improvement ideas, corrective actions, responsible persons and closure status. Updated by the QM after every audit and management review.</div>
+        </div>
+        <span class="pill pill-slate doc-type">Log · XLSX</span>
+      </div>
+      <div class="doc-row">
+        <div class="doc-icon" style="background:#DBEAFE">📊</div>
+        <div class="doc-info">
+          <div class="doc-name">Internal Audit Overview Report</div>
+          <div class="doc-desc">Summary of conformity scores across all 25 processes for each audit cycle. Shows planned vs completed audits and overall percentage compliance. Shared with the Management Team.</div>
+        </div>
+        <span class="pill pill-slate doc-type">Report · XLSX</span>
+      </div>
+      <div class="doc-row">
+        <div class="doc-icon" style="background:#EDE9FE">📋</div>
+        <div class="doc-info">
+          <div class="doc-name">ISO 9001 Requirements Log</div>
+          <div class="doc-desc">Maps each ISO 9001:2015 clause to the relevant PLP processes, procedures and evidence. Used during external audits to demonstrate coverage of all standard requirements.</div>
+        </div>
+        <span class="pill pill-slate doc-type">Reference · XLSX</span>
+      </div>
+      <div class="doc-row">
+        <div class="doc-icon" style="background:var(--teal-light)">📄</div>
+        <div class="doc-info">
+          <div class="doc-name">Audit Report Template (per process)</div>
+          <div class="doc-desc">Pre-populated with current procedure steps for the process being audited. The auditor records findings, conformity scores and improvements directly into this template during the audit.</div>
+        </div>
+        <span class="pill pill-teal doc-type">Template · DOCX</span>
+      </div>
+      <div class="doc-row">
+        <div class="doc-icon" style="background:var(--maroon-light)">📖</div>
+        <div class="doc-info">
+          <div class="doc-name">Quality Manual</div>
+          <div class="doc-desc">Explains the purpose and structure of the QMS for all PLP staff. Covers how to navigate the three SharePoint areas, add documents, request changes, and understand the Process Architecture.</div>
+        </div>
+        <span class="pill pill-maroon doc-type">Manual · PDF</span>
+      </div>
+      <div class="doc-row">
+        <div class="doc-icon" style="background:var(--gold-pale)">✅</div>
+        <div class="doc-info">
+          <div class="doc-name">Process Flowchart &amp; Procedure Checklists</div>
+          <div class="doc-desc">Formatting and content checklists the QM and process owners use when creating or updating any flowchart or procedure. Ensures all documents meet the required standard before Director sign-off.</div>
+        </div>
+        <span class="pill pill-gold doc-type">Checklist · PDF</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>PL Projects · Quality Management System · ISO 9001:2015</p>
+  <p>For changes to this guide contact the Quality Manager</p>
+</div>
+
+<script>
+/* ── TAB NAVIGATION ── */
+function showPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+  closeDetail();
+}
+
+/* ── PROCESS DETAIL DATA ── */
+const processData = {
+  understand: {
+    title: 'Understand markets & customers',
+    sub: 'Deliver Business · Process owner: Andy P',
+    pills: ['Deliver Business','Min: 1/yr'],
+    desc: 'Analyses the market landscape and customer needs to inform PLP\'s strategic direction. Feeds directly into business strategy and planning.',
+    steps: [
+      { t: 'Monitor market trends', d: 'Review sector news, competitor activity and client feedback to understand the current landscape.' },
+      { t: 'Gather customer intelligence', d: 'Collect feedback from clients, account managers and delivery teams to identify evolving needs.' },
+      { t: 'Document findings', d: 'Record insights and share with the Management Team to inform strategy.' }
+    ]
+  },
+  strategy: {
+    title: 'Develop business strategy & plans',
+    sub: 'Deliver Business · Process owner: Andy P / Josie R',
+    pills: ['Deliver Business','Min: 1/yr'],
+    desc: 'Translates market intelligence into a documented business strategy and annual plan, including quality objectives aligned to ISO 9001.',
+    steps: [
+      { t: 'Set strategic objectives', d: 'Director and MT agree priorities, targets and KPIs for the year.' },
+      { t: 'Produce the business plan', d: 'Document strategies, resource requirements and timelines.' },
+      { t: 'Communicate and implement', d: 'Share the plan with relevant staff and track progress in MT meetings.' }
+    ]
+  },
+  courses: {
+    title: 'Create & maintain training courses',
+    sub: 'Deliver Business · Process owner: Josie R',
+    pills: ['Deliver Business','Min: 1/2yrs'],
+    desc: 'Develops and keeps up-to-date the portfolio of training courses PLP delivers, ensuring content remains current and meets accreditation requirements.',
+    steps: [
+      { t: 'Identify course needs', d: 'Review market demand and accreditation body requirements for new or updated courses.' },
+      { t: 'Develop course content', d: 'Create or update materials, assessments and delivery guides.' },
+      { t: 'Review and approve', d: 'Quality review of content before publishing to Active Quality Documents.' }
+    ]
+  },
+  market: {
+    title: 'Market services',
+    sub: 'Deliver Business · Process owner: TBC',
+    pills: ['Deliver Business','Min: 1/2yrs'],
+    desc: 'Plans and executes marketing activity to promote PLP\'s training and consultancy services to target audiences.',
+    steps: [
+      { t: 'Plan marketing campaigns', d: 'Marketing Manager prepares a schedule using the Annual Market Campaign Schedule Template.' },
+      { t: 'Create marketing media', d: 'Design and produce content for agreed channels.' },
+      { t: 'Review and sign off', d: 'Content reviewed and approved before publication.' }
+    ]
+  },
+  'train-enq': {
+    title: 'Receive training course enquiry',
+    sub: 'Deliver Business · Process owner: Josie R',
+    pills: ['Deliver Business','Min: 1/2yrs'],
+    desc: 'Handles incoming enquiries for training courses, captures requirements and logs them ready for the research and options stage.',
+    steps: [
+      { t: 'Receive enquiry', d: 'Support person logs the enquiry on the Training Course Enquiry and Proposal Form.' },
+      { t: 'Establish requirements', d: 'Clarify dates, delegate numbers, format preferences and any bespoke needs.' },
+      { t: 'Log and pass on', d: 'Update the enquiry log and move to Research & present course options.' }
+    ]
+  },
+  'train-opt': {
+    title: 'Research & present course options',
+    sub: 'Deliver Business · Process owner: Josie R',
+    pills: ['Deliver Business','Min: 1/2yrs'],
+    desc: 'Researches suitable training courses for the client\'s requirements and presents a proposal.',
+    steps: [
+      { t: 'Identify suitable courses', d: 'Match client requirements to PLP\'s portfolio of standard and bespoke courses.' },
+      { t: 'Prepare proposal', d: 'Draft a Training Course Proposal for the client including dates, costs and course details.' },
+      { t: 'Present to client', d: 'Send proposal and manage client feedback to agree the course.' }
+    ]
+  },
+  'train-design': {
+    title: 'Design & produce bespoke training',
+    sub: 'Deliver Business · Process owner: Josie R',
+    pills: ['Deliver Business','Min: 1/2yrs'],
+    desc: 'Where a standard course doesn\'t meet requirements, a bespoke or new course is designed and produced.',
+    steps: [
+      { t: 'Define brief', d: 'Agree scope, learning outcomes and delivery format with the client.' },
+      { t: 'Develop materials', d: 'Create course content, recording new materials on the New Training Material Form.' },
+      { t: 'Review and version control', d: 'Quality review, version control and sign-off before storing in Active Quality Documents.' }
+    ]
+  },
+  'train-del': {
+    title: 'Deliver training course',
+    sub: 'Deliver Business · Process owner: Josie R',
+    pills: ['Deliver Business','Min: 1/yr'],
+    desc: 'The end-to-end process for confirming and delivering a training course to delegates.',
+    steps: [
+      { t: 'Confirm course details', d: 'Confirm venue, dates, delegate list and any pre-course materials with the client.' },
+      { t: 'Deliver the course', d: 'Trainer delivers using the approved course materials, completing on-site safety checks.' },
+      { t: 'Collect evaluations', d: 'Delegates complete MS Forms course evaluation; results recorded in Active Quality Documents.' }
+    ]
+  },
+  'train-review': {
+    title: 'Review training delivery',
+    sub: 'Deliver Business · Process owner: Josie R',
+    pills: ['Deliver Business','Min: 1/2yrs'],
+    desc: 'Reviews the outcomes of a delivered training course to drive continuous improvement.',
+    steps: [
+      { t: 'Trainer feedback', d: 'Trainer completes the Review Course Delivery Form with observations and suggestions.' },
+      { t: 'Analyse evaluations', d: 'Training Support Person analyses delegate feedback and records average scores.' },
+      { t: 'Review meeting', d: 'Trainer and Training Director review the form; improvements logged on the Improvement Log.' }
+    ]
+  },
+  'cons-enq': {
+    title: 'Receive consultancy enquiry',
+    sub: 'Deliver Business · Process owner: Dan C',
+    pills: ['Deliver Business','Min: 1/2yrs'],
+    desc: 'Handles incoming consultancy enquiries, logs them on the CRM and gathers initial requirements.',
+    steps: [
+      { t: 'Receive enquiry', d: 'BDM or Client Lead receives enquiry and shares at the Work Pipeline Meeting.' },
+      { t: 'Log on CRM', d: 'PLP Administrator logs enquiry on the CRM.' },
+      { t: 'Gather requirements', d: 'BDM or Client Lead captures full requirements and records in the CRM.' }
+    ]
+  },
+  'cons-opt': {
+    title: 'Research & present consultancy options',
+    sub: 'Deliver Business · Process owner: Nathan S',
+    pills: ['Deliver Business','Min: 1/2yrs'],
+    desc: 'Identifies suitable consultants for the client\'s requirements and presents CVs and rates for review.',
+    steps: [
+      { t: 'Identify consultants', d: 'Head of Delivery prioritises available PLP consultants using the Resource Utilisation Tracker.' },
+      { t: 'Issue CV and rate', d: 'BDM or Client Lead sends consultant CV and daily rate to the enquirer.' },
+      { t: 'Negotiate and agree', d: 'Rate negotiations handled if required; confirmed when client accepts.' }
+    ]
+  },
+  'cons-del': {
+    title: 'Deliver consultancy',
+    sub: 'Deliver Business · Process owner: Dan C',
+    pills: ['Deliver Business','Min: 1/yr'],
+    desc: 'Covers the full contract delivery lifecycle from signing through to end-of-contract meeting.',
+    steps: [
+      { t: 'Review and sign contract', d: 'Commercial Manager reviews T&Cs and signs the contract.' },
+      { t: 'Onboarding', d: 'Client Lead supports consultant onboarding and records progress in CRM.' },
+      { t: 'Monitor delivery', d: 'Client Lead records service details in the AM monthly report and monitors client satisfaction.' },
+      { t: 'End of contract meeting', d: 'Client Lead arranges a closing meeting to confirm all obligations have been met.' }
+    ]
+  },
+  'cons-review': {
+    title: 'Review consultancy delivery',
+    sub: 'Deliver Business · Process owner: Dan C',
+    pills: ['Deliver Business','Min: 1/yr'],
+    desc: 'Reviews the completed consultancy contract to capture lessons learned and opportunities for case study development.',
+    steps: [
+      { t: 'Post-contract review meeting', d: 'Client Lead meets with consultant to discuss what went well, improvements and satisfaction.' },
+      { t: 'Case study (if applicable)', d: 'Client Lead evaluates whether to develop a case study; drafts, gets client approval and publishes.' },
+      { t: 'Share and record', d: 'Outputs shared with Head of Delivery; Post-contract Review Template stored on SharePoint.' }
+    ]
+  },
+  finances: {
+    title: 'Manage finances',
+    sub: 'Support Business · Process owner: Andy P',
+    pills: ['Support Business','Min: 1/yr'],
+    desc: 'Manages PLP\'s financial records, invoicing, payments and reporting to ensure sound financial governance.',
+    steps: [
+      { t: 'Maintain financial records', d: 'Keep accounting software and internal finance documentation up to date.' },
+      { t: 'Process invoices and payments', d: 'Raise, send and reconcile invoices; process supplier payments.' },
+      { t: 'Financial reporting', d: 'Produce regular financial reports for the Director and MT.' }
+    ]
+  },
+  insurances: {
+    title: 'Manage insurances',
+    sub: 'Support Business · Process owner: Nafa D',
+    pills: ['Support Business','Min: 1/3yrs'],
+    desc: 'Ensures PLP\'s insurance policies remain current, adequate and correctly documented.',
+    steps: [
+      { t: 'Review existing cover', d: 'Annual review of all policies against current business activities.' },
+      { t: 'Renew or update policies', d: 'Coordinate renewal with brokers; record updated details on SharePoint.' },
+      { t: 'Communicate to MT', d: 'Share insurance summary with Management Team.' }
+    ]
+  },
+  hse: {
+    title: 'Manage health, safety & environment',
+    sub: 'Support Business · Process owner: Andy P / Nafa D',
+    pills: ['Support Business','Min: 1/yr'],
+    desc: 'Maintains PLP\'s health, safety and environmental compliance across all activities.',
+    steps: [
+      { t: 'Maintain HSE documentation', d: 'Keep risk assessments, policies and training records up to date.' },
+      { t: 'Monitor compliance', d: 'Regular checks that staff and activities comply with HSE requirements.' },
+      { t: 'Review and improve', d: 'Annual HSE review; improvements managed via the Improvement Log.' }
+    ]
+  },
+  accred: {
+    title: 'Achieve & maintain accreditations',
+    sub: 'Support Business · Process owner: Nafa D',
+    pills: ['Support Business','Min: 1/yr'],
+    desc: 'Manages all third-party accreditations including ISO 9001 and relevant professional body memberships.',
+    steps: [
+      { t: 'Monitor accreditation requirements', d: 'Track renewal dates and any changes to accreditation body requirements.' },
+      { t: 'Prepare for audits', d: 'Coordinate external audit preparation; ensure all evidence is available.' },
+      { t: 'Maintain certification', d: 'Respond to audit findings; manage ongoing surveillance audit schedule.' }
+    ]
+  },
+  qms: {
+    title: 'Operate QMS',
+    sub: 'Support Business · Process owner: Nafa D',
+    pills: ['Support Business','Min: 2/3yrs'],
+    desc: 'Establishes, implements and continually improves the Quality Management System structure and processes.',
+    steps: [
+      { t: 'Design QMS structure', d: 'QM designs the QMS to comply with ISO 9001:2015 and the quality policy.' },
+      { t: 'Maintain Process Architecture', d: 'QM publishes and maintains the Process Architecture on SharePoint.' },
+      { t: 'Appoint and support process owners', d: 'QM appoints process owners and records them in the Roles and Responsibilities Matrix.' },
+      { t: 'Implement and improve processes', d: 'Set targets, track implementation and measure progress.' }
+    ]
+  },
+  procurement: {
+    title: 'Manage procurement & suppliers',
+    sub: 'Support Business · Process owner: Andy P',
+    pills: ['Support Business','Min: 2/3yrs'],
+    desc: 'Controls the selection, approval and ongoing management of PLP\'s external suppliers and contractors.',
+    steps: [
+      { t: 'Identify and assess suppliers', d: 'Evaluate new suppliers against quality, cost and ethical criteria; record on the Approved Supplier Log.' },
+      { t: 'Approve and onboard', d: 'Issue purchase orders and record approvals on the Procurement Log.' },
+      { t: 'Monitor supplier performance', d: 'Regular reviews of key suppliers; manage issues through the Improvement Log.' }
+    ]
+  },
+  people: {
+    title: 'Recruit & develop people',
+    sub: 'Support Business · Process owner: Jess B',
+    pills: ['Support Business','Min: 1/yr'],
+    desc: 'Manages PLP\'s recruitment, onboarding, training and ongoing development of its people.',
+    steps: [
+      { t: 'Identify resource needs', d: 'MT identifies staffing gaps and agrees recruitment briefs.' },
+      { t: 'Recruit', d: 'Advertise, interview and appoint; complete compliance checks and onboarding.' },
+      { t: 'Develop and review', d: 'Ongoing training, appraisals and competency management.' }
+    ]
+  },
+  docs: {
+    title: 'Manage documented information',
+    sub: 'Support Business · Process owner: Nafa D',
+    pills: ['Support Business','Min: 1/yr'],
+    desc: 'Controls the creation, approval, version control, storage and archiving of all QMS documents.',
+    steps: [
+      { t: 'Create or update documents', d: 'QM drafts new/updated flowcharts, procedures and templates using the relevant checklists.' },
+      { t: 'Sign off', d: 'Director reviews and approves; QM stores approval in the QMS email inbox.' },
+      { t: 'Publish and archive', d: 'QM uploads approved PDFs to Active Quality Documents; originals to Original Documents.' }
+    ]
+  },
+  infra: {
+    title: 'Manage infrastructure & environment',
+    sub: 'Support Business · Process owner: Nafa D',
+    pills: ['Support Business','Min: 1/2yrs'],
+    desc: 'Maintains the physical and digital infrastructure needed to deliver PLP\'s services.',
+    steps: [
+      { t: 'Maintain infrastructure register', d: 'Record and track all equipment, software and facilities.' },
+      { t: 'Plan maintenance', d: 'Schedule and carry out preventive maintenance activities.' },
+      { t: 'Review and improve', d: 'Regular infrastructure reviews; issues managed through the Improvement Log.' }
+    ]
+  },
+  performance: {
+    title: 'Evaluate business performance',
+    sub: 'Support Business · Process owner: Josie R',
+    pills: ['Support Business','Min: 1/yr'],
+    desc: 'Monitors and evaluates PLP\'s performance against quality objectives and KPIs, feeding results into management review.',
+    steps: [
+      { t: 'Collect performance data', d: 'Gather metrics from across the business: sales, delivery, customer satisfaction, audit results.' },
+      { t: 'Analyse and report', d: 'Produce performance reports for the MT and Directors.' },
+      { t: 'Management review', d: 'Formal review of QMS performance; decisions recorded and actioned.' }
+    ]
+  },
+  audits: {
+    title: 'Conduct internal quality audits',
+    sub: 'Support Business · Process owner: Nafa D',
+    pills: ['Support Business','Min: 1/yr'],
+    desc: 'Plans, conducts and reports internal quality audits across all 25 PLP processes against documented procedures.',
+    steps: [
+      { t: 'Plan and schedule', d: 'QM schedules all audits by priority and assigns auditors on the Internal Quality Audit Schedule.' },
+      { t: 'Initiate and conduct', d: 'QM prepares report template; auditor interviews process owner and checks evidence.' },
+      { t: 'Report and resolve', d: 'Auditor produces report; non-conformities and improvements logged on the Improvement Log.' }
+    ]
+  },
+  improvement: {
+    title: 'Manage improvement',
+    sub: 'Support Business · Process owner: Nafa D',
+    pills: ['Support Business','Min: 1/yr'],
+    desc: 'Captures, tracks and drives closure of all improvement actions arising from audits, management reviews and staff suggestions.',
+    steps: [
+      { t: 'Log improvements', d: 'All non-conformities and improvements recorded on the Active Improvement Log by the QM.' },
+      { t: 'Assign and track actions', d: 'QM agrees actions with process owners; actionees assigned with target dates.' },
+      { t: 'Verify closure', d: 'QM verifies that corrective actions have been completed and closes items on the log.' }
+    ]
+  }
+};
+
+function openDetail(key) {
+  const d = processData[key];
+  if (!d) return;
+  document.getElementById('detail-title').textContent = d.title;
+  document.getElementById('detail-subtitle').textContent = d.sub;
+  document.getElementById('detail-desc').textContent = d.desc;
+  const pillsEl = document.getElementById('detail-pills');
+  pillsEl.innerHTML = d.pills.map(p => {
+    const cls = p.startsWith('Deliver') ? 'pill-gold' : p.startsWith('Support') ? 'pill-teal' : 'pill-slate';
+    return `<span class="pill ${cls}">${p}</span>`;
+  }).join('');
+  const stepsEl = document.getElementById('detail-steps');
+  stepsEl.innerHTML = d.steps.map((s, i) => `
+    <div class="detail-step">
+      <span class="step-num">${i+1}</span>
+      <div class="step-text"><div class="step-title">${s.t}</div>${s.d}</div>
+    </div>
+  `).join('');
+  const panel = document.getElementById('detail-panel');
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('visible');
+}
+</script>
+</body>
+</html>
